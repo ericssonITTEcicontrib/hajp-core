@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Fields to be preserved:
+For example, Jenkins holds a separated credentials.xml and credentials are referred by Id for
+use and the Id is specific to a Jenkins instance. On update of a job, the credential Id must
+be preserved while the rest of the xml is updated.
+-->
+<preservedFields>
+    <!-- Credential of SCM Git in job's config.xml to be preserved -->
+    <jobs>/project/scm/userRemoteConfigs/hudson.plugins.git.UserRemoteConfig/credentialsId</jobs>
+    <!-- Credential of Multiple SCM Git in job's config.xml to be preserved -->
+    <jobs>/project/scm/scms/hudson.plugins.git.GitSCM/userRemoteConfigs/hudson.plugins.git.UserRemoteConfig/credentialsId</jobs>
+</preservedFields>

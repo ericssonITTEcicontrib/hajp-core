@@ -1,0 +1,90 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+	<l:layout title="HA Plugin" permission="${app.ADMINISTER}"
+		norefresh="true">
+		<!-- <l:hasPermission permission="${app.READ}"> <st:include page="sidepanel.jelly"
+			it="${app}" /> </l:hasPermission> -->
+
+		<l:main-panel>
+			<h1>High Availability Plugin Settings</h1>
+
+            <div style="font-weight: bold;">Cluster Status</div>
+            <div style="border-bottom: 1px solid black; margin-bottom: 0.2em; margin-top: 0.4em;">
+                <div class="foo" style="background-color:#EBF5FF;">
+                Cluster Status: <span id="cluster_status">${it.getHajpClusterStatus()}</span><br/>
+                Master Role: <span id="master.role">${it.getHajpMasterStatus()}</span><br/>
+                <small>Note: Status updates are not real-time.</small><br/>
+                </div>
+            </div>
+
+			<f:form method="post" action="submitClusterMembers">
+				<f:section title="Cluster members" />
+				<j:set var="self" value="${it.self}" />
+				<f:section name="self">
+					<f:entry title="Self Address">
+						<f:textbox style="width:100px" name="ip" value="${self.ip}" />
+					</f:entry>
+					<f:entry title="Self Port">
+						<f:textbox style="width:40px" name="port" value="${self.port}" />
+					</f:entry>
+				</f:section>
+				<f:section name="orchestrator">
+					<f:entry title="Orchestrator Address">
+						<f:textbox style="width:100px" name="ip" value="${orchestrator.ip}" />
+					</f:entry>
+					<f:entry title="Orchestrator Port">
+						<f:textbox style="width:40px" name="port" value="${orchestrator.port}" />
+					</f:entry>
+				</f:section>
+
+				<f:block>
+					<f:submit name="submitClusterMembers" value="Submit" />
+					<p style="color:red"> Changes made will not take effect until Jenkins has
+						been restarted.
+					</p>
+				</f:block>
+			</f:form>
+
+		</l:main-panel>
+	</l:layout>
+
+	<script type="text/javascript">
+		Q(window).ready(function() {
+		var timer;
+
+		if(Q("tr[nameref=rowSetStart3]").length &gt; 0) {
+		hideIfChecked();
+		}
+		else {
+		timer = setInterval(function() {
+		//console.log("check if rowsexists now");
+		if(Q("tr[nameref=rowSetStart3]").length &gt; 0) {
+		hideIfChecked();
+		clearInterval(timer);
+		}
+		},50);
+		}
+
+
+		Q("#globalNodeProperties").change(function() {
+		if (this.checked) {
+		Q("tr[nameref=rowSetStart3]").show();
+		} else {
+		Q("tr[nameref=rowSetStart3]").hide();
+		}
+		});
+
+		function hideIfChecked() {
+		var box = Q("#globalNodeProperties")[0];
+		if(box.checked) {
+		Q("tr[nameref=rowSetStart3]").show();
+		} else {
+		Q("tr[nameref=rowSetStart3]").hide();
+		}
+		}
+		});
+	</script>
+
+</j:jelly>

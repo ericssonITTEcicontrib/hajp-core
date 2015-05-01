@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>1.596.2</version>
+        <relativePath />
+    </parent>
+
+    <groupId>com.ericsson.jenkinsci.hajp</groupId>
+    <artifactId>hajp-core</artifactId>
+    <name>Jenkins HA plugin</name>
+    <version>2.0.3-SNAPSHOT</version>
+    <packaging>hpi</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jenkins.version>1.596.2</jenkins.version>
+        <powermock.version>1.6.1</powermock.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ericsson.jenkinsci.hajp</groupId>
+            <artifactId>hajp-api</artifactId>
+            <version>1.0.12</version>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.jenkinsci.hajp</groupId>
+            <artifactId>hajp-common</artifactId>
+            <version>1.0.7</version>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.main</groupId>
+            <artifactId>jenkins-test-harness</artifactId>
+            <version>${jenkins.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>jquery</artifactId>
+            <version>1.7.2-1</version>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-cluster_2.11</artifactId>
+            <version>2.3.9</version>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpg-jdk16</artifactId>
+            <version>1.46</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.14.8</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-testkit_2.11</artifactId>
+            <version>2.3.9</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.8</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <testNGArtifactName>none:none</testNGArtifactName>
+                    <excludes>
+                        <exclude>InjectedTest.java</exclude>
+                        <exclude>**/*SeleniumTest*.java</exclude>
+                        <exclude>**/*TestNg.java</exclude>
+                    </excludes>
+                    <argLine>-noverify</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jenkins-ci.tools</groupId>
+                <artifactId>maven-hpi-plugin</artifactId>
+                <version>1.112</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Support-Dynamic-Loading>true</Support-Dynamic-Loading>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.localizer</groupId>
+                <artifactId>maven-localizer-plugin</artifactId>
+                <version>1.12</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <fileMask>Messages.properties</fileMask>
+                            <outputDirectory>target/generated-sources/localizer</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.2.201409121644</version>
+            </plugin>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-antrun-plugin</artifactId>
+	      <version>1.6</version>
+	      <executions>
+	        <execution>
+		  <id>repack</id>
+		  <phase>package</phase>
+		  <goals>
+		    <goal>run</goal>
+		  </goals>
+		  <configuration>
+		    <target>
+		      <unzip src="${org.jenkins-ci.main:jenkins-war:war}" dest="${project.build.directory}/tmp" />
+		      <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/jenkins-war-modified-${jenkins.version}.war">
+		        <fileset dir="${project.build.directory}/tmp" />
+		        <zipfileset file="${com.typesafe.akka:akka-actor_2.11:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${com.typesafe.akka:akka-cluster_2.11:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${com.typesafe.akka:akka-remote_2.11:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${com.typesafe:config:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${io.netty:netty:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${com.google.protobuf:protobuf-java:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${org.scala-lang:scala-library:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${org.slf4j:slf4j-api:jar}" prefix="WEB-INF/lib" />
+		        <zipfileset file="${com.ericsson.jenkinsci.hajp:hajp-common:jar}" prefix="WEB-INF/lib" />
+		      </zip>
+		    </target>
+		  </configuration>
+	        </execution>
+	      </executions>
+	    </plugin>
+            <plugin>
+	      <groupId>org.codehaus.mojo</groupId>
+	      <artifactId>build-helper-maven-plugin</artifactId>
+	      <version>1.9.1</version>
+	      <executions>
+	        <execution>
+	        <id>attach-artifacts</id>
+	        <phase>package</phase>
+	        <goals>
+	          <goal>attach-artifact</goal>
+	        </goals>
+	        <configuration>
+	        <artifacts>
+		  <artifact>
+		    <file>${project.build.directory}/jenkins-war-modified-${jenkins.version}.war</file>
+		    <type>war</type>
+		    <classifier>jenkins-war-modified</classifier>
+		  </artifact>
+	        </artifacts>
+	      </configuration>
+	    </execution>
+	  </executions>
+	  </plugin>
+        </plugins>
+    </build>
+</project>
