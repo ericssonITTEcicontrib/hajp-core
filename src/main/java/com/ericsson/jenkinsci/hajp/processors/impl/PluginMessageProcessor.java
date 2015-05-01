@@ -25,6 +25,15 @@ import java.util.Map;
     }
 
     /**
+     * Constructor
+     *
+     * @param jenkins the jenkins instance
+     */
+    public PluginMessageProcessor(Jenkins jenkins) {
+        this.pluginsManager = new PluginsManager(jenkins);
+    }
+
+    /**
      * Replicates the operation carried by the received job message..
      *
      * @param hajpMessage the plugin message to be processed
