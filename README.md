@@ -49,24 +49,24 @@ Use the following settings
 * 172.17.0.3 as Core2 (port 9081)
 * For convenience please use port 2551 for all components.
 
-<img src="http://i62.tinypic.com/2rnze4h.jpg" width="1024" height="768">
+<img src="http://i62.tinypic.com/2rnze4h.jpg">
 
 ### Jenkins Instance 1 (port 9080) Settings Filled
-<img src="http://i57.tinypic.com/s6p2xv.jpg" width="1024" height="768">
+<img src="http://i57.tinypic.com/s6p2xv.jpg">
 
 ### Jenkins Instance 2 (port 9081) Settings Filled
-<img src="http://i58.tinypic.com/2u4src1.jpg" width="1024" height="768">
+<img src="http://i58.tinypic.com/2u4src1.jpg">
 
 ### Jenkins Instance 1 becomes Active Master
 After the settings are entered, wait for about 10 seconds and reload 
 settings page to see Jenkins Instance 1 becoming Active Master.
 
-<img src="http://i57.tinypic.com/20gla4o.jpg" width="1024" height="768">
+<img src="http://i57.tinypic.com/20gla4o.jpg">
 
 ### Jenkins Instance 2 becomes Hot Standby
 After the settings are entered, wait for about 10 seconds and reload 
 settings page to see Jenkins Instance 1 becoming Active Master.
 
-<img src="http://i57.tinypic.com/2vhyarr.jpg" width="1024" height="768">
+<img src="http://i57.tinypic.com/2vhyarr.jpg">
 
 
