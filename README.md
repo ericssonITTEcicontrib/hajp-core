@@ -1,6 +1,12 @@
-[TOC]
+Table of Contents
 
-# Installation instructions
+* [Installation Instructions](#InstallationInstructions)
+
+* [User Guide](#UserGuide)
+    * [Configuration](#Configuration)
+    
+
+# Installation Instructions <a name="InstallationInstructions"></a>
 
 Assuming a TOMCAT deployment, these jar files must be placed under TOMCAT/lib as managed dependencies for hpi to work correctly when built from a cloned repo instance.
 Otherwise these jars must be moved pre-packaging to hpi within TARGET folder.
@@ -15,7 +21,8 @@ protobuf-java-2.5.0.jar
 scala-library-2.11.5.jar
 slf4j-api-1.7.7.jar
 
-# UserGuide
+
+# User Guide <a name="UserGuide"></a>
 High Availability Jenkins Project is about creating a fail-over capable cluster of Jenkins instances with selective synchronization
 , monitoring and control capabilities.
 
@@ -24,21 +31,22 @@ while all others become Hot Standby members.
 
 When a fail-over occurs, a new Active Master is elected from remaining Hot Standby members.
 
-## Click Manage Jenkins on Left Corner
+a Vagrant file is provided for testing purposes... it needs Vagrant version > 1.7.0 and VirtualBox of version 4.3 and above.
+[VagrantFile](https://raw.githubusercontent.com/danielyinanc/hajp-test/develop/functional/deploy/vagrant/Vagrantfile)
+
+##Configuration <a name="Configuration"></a>
 After launching the Jenkins instance, please click manage jenkins on left corner of screen.
 
 <img src="http://i62.tinypic.com/25flv1l.jpg">
 
-## Click HAJP-Settings on Right Corner
 HAJP-Settings button is among other buttons on the right side of the screen. 
 
 <img src="http://i61.tinypic.com/8wzc3s.jpg">
 
-## Setup HAJP Configuration
-This setup information is taken to match Vagrant file provided for testing purposes (above). Other than IP ranges, same
-configuration steps are applicable for any HAJP installation.
+This setup information is taken to match Vagrant file provided for testing purposes [VagrantFile](https://raw.githubusercontent.com/danielyinanc/hajp-test/develop/functional/deploy/vagrant/Vagrantfile). 
+Other than IP ranges, same configuration steps are applicable for any HAJP installation.
 
-### Empty settings page
+### Empty settings page <a name="EmptySettings"></a>
 <img src="http://i59.tinypic.com/x393jq.jpg">
 
 ### ipFinder output
