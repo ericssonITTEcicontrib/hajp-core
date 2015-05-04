@@ -50,6 +50,17 @@ import java.util.Collection;
     }
 
     /**
+     * Constructor
+     *
+     * @param jenkins the jenkins instance
+     */
+    public JobMessageProcessor(Jenkins jenkins) {
+        this.jobsManager = new JobsManager(jenkins);
+        this.buildsManager = new BuildsManager(jobsManager);
+        this.sender = new HajpClusterSender();
+    }
+
+    /**
      * Replicates the operation carried by the received job message.
      *
      * @param message the job message to be processed

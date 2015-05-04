@@ -34,6 +34,16 @@ import java.nio.file.Path;
     }
 
     /**
+     * Constructor
+     *
+     * @param jenkins the jenkins instance
+     */
+    public BuildMessageProcessor(Jenkins jenkins) {
+        this.jobsManager = new JobsManager(jenkins);
+        this.buildsManager = new BuildsManager(jobsManager);
+    }
+
+    /**
      * Replicates the operation carried by the received build message..
      *
      * @param message the build message to be processed
