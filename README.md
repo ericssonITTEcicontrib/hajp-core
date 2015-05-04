@@ -25,17 +25,21 @@ while all others become Hot Standby members.
 When a fail-over occurs, a new Active Master is elected from remaining Hot Standby members.
 
 ## Click Manage Jenkins on Left Corner
+After launching the Jenkins instance, please click manage jenkins on left corner of screen.
 
-<img src="http://i62.tinypic.com/25flv1l.jpg" width="1024" height="768">
+<img src="http://i62.tinypic.com/25flv1l.jpg">
 
 ## Click HAJP-Settings on Right Corner
+HAJP-Settings button is among other buttons on the right side of the screen. 
 
-<img src="http://i61.tinypic.com/8wzc3s.jpg" width="1024" height="768">
+<img src="http://i61.tinypic.com/8wzc3s.jpg">
 
 ## Setup HAJP Configuration
+This setup information is taken to match Vagrant file provided for testing purposes (above). Other than IP ranges, same
+configuration steps are applicable for any HAJP installation.
 
 ### Empty settings page
-<img src="http://i59.tinypic.com/x393jq.jpg" width="1024" height="768">
+<img src="http://i59.tinypic.com/x393jq.jpg">
 
 ### ipFinder output
 Use the following settings
