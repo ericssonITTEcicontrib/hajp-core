@@ -34,6 +34,18 @@ When a fail-over occurs, a new Active Master is elected from remaining Hot Stand
 a Vagrant file is provided for testing purposes... it needs Vagrant version > 1.7.0 and VirtualBox of version 4.3 and above.
 [VagrantFile](https://raw.githubusercontent.com/danielyinanc/hajp-test/develop/functional/deploy/vagrant/Vagrantfile)
 
+All that is required for deployment (assuming Vagrant and VirtualBox is installed in the system) is to run the following 
+command at the same folder with Vagrantfile downloaded above
+ 
+    vagrant up
+
+Vagrant installation tutorials: 
+
+[Tutsplus Tutorial](http://code.tutsplus.com/tutorials/vagrant-what-why-and-how--net-26500)
+[Vagrant Getting Started](http://docs.vagrantup.com/v2/getting-started/)
+
+
+
 ##Configuration <a name="Configuration"></a>
 After launching the Jenkins instance, please click manage jenkins on left corner of screen.
 
