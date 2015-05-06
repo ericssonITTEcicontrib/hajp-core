@@ -1,5 +1,6 @@
 package com.ericsson.jenkinsci.hajp.processors.impl;
 
+import com.ericsson.jenkinsci.hajp.messages.GlobalConfig.AbstractGlobalConfigMessage;
 import com.ericsson.jenkinsci.hajp.messages.HajpMessage;
 import com.ericsson.jenkinsci.hajp.messages.builds.AbstractBuildMessage;
 import com.ericsson.jenkinsci.hajp.messages.credentials.AbstractCredentialsMessage;
@@ -22,6 +23,7 @@ public class ClusterMessageProcessor implements ClusterProcessor {
     @Inject @Named("pluginMsgProcessor") private JenkinsProcessor pluginMsgProcessor;
     @Inject @Named("credentialMessageProcessor") private JenkinsProcessor
         credentialMessageProcessor;
+    @Inject @Named("globalConfigMsgProcessor") private JenkinsProcessor globalConfigMsgProcessor;
 
 
     /**
@@ -41,6 +43,9 @@ public class ClusterMessageProcessor implements ClusterProcessor {
         }
         if (hajpMessage instanceof AbstractCredentialsMessage) {
             credentialMessageProcessor.process(hajpMessage);
+        }
+        if (hajpMessage instanceof AbstractGlobalConfigMessage) {
+            globalConfigMsgProcessor.process(hajpMessage);
         }
     }
 }

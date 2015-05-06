@@ -10,6 +10,7 @@ import com.ericsson.jenkinsci.hajp.processors.JenkinsProcessor;
 import com.ericsson.jenkinsci.hajp.processors.impl.BuildMessageProcessor;
 import com.ericsson.jenkinsci.hajp.processors.impl.ClusterMessageProcessor;
 import com.ericsson.jenkinsci.hajp.processors.impl.CredentialMessageProcessor;
+import com.ericsson.jenkinsci.hajp.processors.impl.GlobalConfigMessageProcessor;
 import com.ericsson.jenkinsci.hajp.processors.impl.JobMessageProcessor;
 import com.ericsson.jenkinsci.hajp.processors.impl.PluginMessageProcessor;
 import com.google.inject.AbstractModule;
@@ -72,6 +73,8 @@ public class HajpTestContext extends AbstractModule {
             .toInstance(pluginMsgProcessor);
         bind(JenkinsProcessor.class).annotatedWith(Names.named("credentialMessageProcessor"))
             .toInstance(credentialMessageProcessor);
+        bind(JenkinsProcessor.class).annotatedWith(Names.named("globalConfigMsgProcessor"))
+            .to(GlobalConfigMessageProcessor.class);
 
         bind(ClusterProcessor.class).to(ClusterMessageProcessor.class);
         bind(HajpClusterExtensionProvider.class).toInstance(

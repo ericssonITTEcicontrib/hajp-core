@@ -10,6 +10,7 @@ import com.ericsson.jenkinsci.hajp.cluster.HajpCluster;
 import com.ericsson.jenkinsci.hajp.cluster.Messages;
 import com.ericsson.jenkinsci.hajp.extensions.HajpClusterExtensionProvider;
 import com.ericsson.jenkinsci.hajp.extensions.HajpClusterExtensionProvider.EVENT;
+import com.ericsson.jenkinsci.hajp.messages.GlobalConfig.AbstractGlobalConfigMessage;
 import com.ericsson.jenkinsci.hajp.messages.HajpMessage;
 import com.ericsson.jenkinsci.hajp.messages.builds.AbstractBuildMessage;
 import com.ericsson.jenkinsci.hajp.messages.credentials.AbstractCredentialsMessage;
@@ -271,7 +272,8 @@ import java.util.Set;
         } else if (isHotStandby() && (hajpMessage instanceof AbstractJobMessage
             || hajpMessage instanceof AbstractBuildMessage
             || hajpMessage instanceof AbstractPluginsMessage
-            || hajpMessage instanceof AbstractCredentialsMessage)) {
+            || hajpMessage instanceof AbstractCredentialsMessage
+            || hajpMessage instanceof AbstractGlobalConfigMessage)) {
             messageProcessor.process(hajpMessage);
         } else if (!isActiveMaster() && hajpMessage instanceof AbstractCredentialsMessage) {
             messageProcessor.process(hajpMessage);

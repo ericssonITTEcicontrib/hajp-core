@@ -2,10 +2,11 @@ package com.ericsson.jenkinsci.hajp.extensions;
 
 import com.ericsson.jenkinsci.hajp.actors.HajpClusterSender;
 import com.ericsson.jenkinsci.hajp.api.PluginsManager;
+import com.ericsson.jenkinsci.hajp.messages.GlobalConfig.SynchronizeGlobalConfigMessage;
 import com.ericsson.jenkinsci.hajp.messages.HajpMessage;
 import com.ericsson.jenkinsci.hajp.messages.plugins.SynchronizePluginMessage;
 import com.google.common.io.Files;
-
+import hudson.Extension;
 import hudson.Plugin;
 import hudson.XmlFile;
 import hudson.model.Saveable;
@@ -19,6 +20,7 @@ import java.io.IOException;
 /**
  * @see hudson.model.listeners.SaveableListener
  */
+@Extension
 @Log4j2 public class HajpSaveableListener extends SaveableListener {
     @Setter private PluginsManager pluginsManager = new PluginsManager(Jenkins.getInstance());
     @Setter private HajpClusterSender sender = new HajpClusterSender();
@@ -43,16 +45,28 @@ import java.io.IOException;
      *, hudson.XmlFile)
      */
     @Override public void onChange(Saveable saveableObject, XmlFile file) {
-        if (saveableObject instanceof Plugin) {
-            Plugin plugin = (Plugin) saveableObject;
-            String pluginName = plugin.getWrapper().getDisplayName();
-            try {
-                HajpMessage message =
-                    new SynchronizePluginMessage(pluginName, Files.toByteArray(file.getFile()));
-                sender.send(message);
-            } catch (IOException e) {
-                log.error(e.getMessage());
+        log.debug("======Saveable:======" + "o: " + saveableObject + " is instance of " + saveableObject.getClass().getName() + " , f: " + file.getFile().getAbsolutePath());
+
+        try {
+            String filename = file.getFile().getName();
+            HajpMessage message = null;
+
+            // job related sync is done via HajpItemListener
+            // TODO need more accurate condition of judging the saveable objects related to global configs
+            if (saveableObject instanceof hudson.model.FreeStyleProject) {
+                log.debug("ignore: hudson.model.FreeStyleProject");
+                return;
             }
+            if (saveableObject instanceof Plugin) {
+                log.debug("======Saveable: Plugin ======");
+                message = new SynchronizePluginMessage(filename, Files.toByteArray(file.getFile()));
+            } else {
+                log.debug("======Saveable: globle ======");
+                message = new SynchronizeGlobalConfigMessage(filename, Files.toByteArray(file.getFile()));
+            }
+            sender.send(message);
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
     }
 }

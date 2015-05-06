@@ -25,13 +25,13 @@
         <dependency>
             <groupId>com.ericsson.jenkinsci.hajp</groupId>
             <artifactId>hajp-api</artifactId>
-            <version>1.0.12</version>
+            <version>1.0.13-SNAPSHOT</version>
             <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>com.ericsson.jenkinsci.hajp</groupId>
             <artifactId>hajp-common</artifactId>
-            <version>1.0.7</version>
+            <version>1.0.8-SNAPSHOT</version>
             <optional>false</optional>
         </dependency>
         <dependency>
