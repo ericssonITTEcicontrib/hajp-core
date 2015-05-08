@@ -1,17 +1,14 @@
 package com.ericsson.jenkinsci.hajp.extensions;
 
 import com.ericsson.jenkinsci.hajp.actors.HajpClusterSender;
-import com.ericsson.jenkinsci.hajp.api.PluginsManager;
 import com.ericsson.jenkinsci.hajp.messages.GlobalConfig.SynchronizeGlobalConfigMessage;
 import com.ericsson.jenkinsci.hajp.messages.HajpMessage;
-import com.ericsson.jenkinsci.hajp.messages.plugins.SynchronizePluginMessage;
 import com.google.common.io.Files;
 import hudson.Extension;
 import hudson.Plugin;
 import hudson.XmlFile;
 import hudson.model.Saveable;
 import hudson.model.listeners.SaveableListener;
-import jenkins.model.Jenkins;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
@@ -22,7 +19,6 @@ import java.io.IOException;
  */
 @Extension
 @Log4j2 public class HajpSaveableListener extends SaveableListener {
-    @Setter private PluginsManager pluginsManager = new PluginsManager(Jenkins.getInstance());
     @Setter private HajpClusterSender sender = new HajpClusterSender();
 
 
@@ -59,7 +55,7 @@ import java.io.IOException;
             }
             if (saveableObject instanceof Plugin) {
                 log.debug("======Saveable: Plugin ======");
-                message = new SynchronizePluginMessage(filename, Files.toByteArray(file.getFile()));
+                // TODO
             } else {
                 log.debug("======Saveable: globle ======");
                 message = new SynchronizeGlobalConfigMessage(filename, Files.toByteArray(file.getFile()));

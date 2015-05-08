@@ -3,7 +3,6 @@ package com.ericsson.jenkinsci.hajp.extensions;
 import com.ericsson.jenkinsci.hajp.actors.HajpClusterSender;
 import com.ericsson.jenkinsci.hajp.messages.GlobalConfig.SynchronizeGlobalConfigMessage;
 import com.ericsson.jenkinsci.hajp.messages.HajpMessage;
-import com.ericsson.jenkinsci.hajp.messages.plugins.SynchronizePluginMessage;
 import hudson.XmlFile;
 import hudson.model.Saveable;
 import org.junit.Assert;
@@ -48,14 +47,6 @@ import java.io.File;
         saveableObject = mockProject;
         unitUnderTest.onChange(saveableObject, xmlFile);
         Mockito.verify(mockSender, Mockito.times(0)).send(Mockito.any(HajpMessage.class));
-    }
-
-    @Test public void testOnChangePlugin() throws Exception {
-        Mockito.when(mockSender.send(Mockito.any(SynchronizePluginMessage.class))).thenReturn(false);
-
-        saveableObject = mockPlugin;
-        unitUnderTest.onChange(saveableObject, xmlFile);
-        Mockito.verify(mockSender, Mockito.times(1)).send(Mockito.any(SynchronizePluginMessage.class));
     }
 
     @Test public void testOnChangeSynchronizeGlobal() throws Exception {
