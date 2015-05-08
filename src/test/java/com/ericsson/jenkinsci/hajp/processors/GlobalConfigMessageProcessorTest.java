@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 
-@RunWith(MockitoJUnitRunner.class) public class GlobalCofigMessageProcessorTest {
+@RunWith(MockitoJUnitRunner.class) public class GlobalConfigMessageProcessorTest {
 
     @Mock private static Jenkins mockJenkins;
     private GlobalConfigMessageProcessor unitUnderTest;
