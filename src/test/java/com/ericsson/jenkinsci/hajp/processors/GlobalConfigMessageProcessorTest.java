@@ -1,11 +1,11 @@
 package com.ericsson.jenkinsci.hajp.processors;
 
-import com.ericsson.jenkinsci.hajp.api.PluginsManager;
+import com.ericsson.jenkinsci.hajp.api.GlobalConfigsManager;
+import com.ericsson.jenkinsci.hajp.messages.GlobalConfig.SynchronizeGlobalConfigMessage;
 import com.ericsson.jenkinsci.hajp.messages.HajpMessage;
 import com.ericsson.jenkinsci.hajp.messages.builds.CreateBuildMessage;
-import com.ericsson.jenkinsci.hajp.messages.plugins.SynchronizePluginMessage;
 import com.ericsson.jenkinsci.hajp.operation.OperationType;
-import com.ericsson.jenkinsci.hajp.processors.impl.PluginMessageProcessor;
+import com.ericsson.jenkinsci.hajp.processors.impl.GlobalConfigMessageProcessor;
 import jenkins.model.Jenkins;
 import org.junit.After;
 import org.junit.Assert;
@@ -18,18 +18,18 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 
-@RunWith(MockitoJUnitRunner.class) public class PluginMessageProcessorTest {
+@RunWith(MockitoJUnitRunner.class) public class GlobalConfigMessageProcessorTest {
 
     @Mock private static Jenkins mockJenkins;
-    private PluginMessageProcessor unitUnderTest;
+    private GlobalConfigMessageProcessor unitUnderTest;
     private HajpMessage hajpMessage;
     @Mock private HajpMessage mockHajpMessage;
 
-    @Mock private PluginsManager mockPluginsManager;
+    @Mock private GlobalConfigsManager mockGlobalConfigsManager;
 
     @Before public void setUp() throws Exception {
-        unitUnderTest = new PluginMessageProcessor(mockJenkins);
-        unitUnderTest.setPluginsManager(mockPluginsManager);
+        unitUnderTest = new GlobalConfigMessageProcessor(mockJenkins);
+        unitUnderTest.setGlobalConfigsManager(mockGlobalConfigsManager);
     }
 
     @After public void tearDown() throws Exception {
@@ -46,21 +46,23 @@ import java.io.IOException;
         String dirName = null;
         byte[] fileAsByteArray = null;
         hajpMessage = new CreateBuildMessage(jobName, buildNumber, dirName, fileAsByteArray);
+        Assert.assertEquals(false, hajpMessage.isValid());
         boolean result = unitUnderTest.process(hajpMessage);
         Assert.assertEquals(false, result);
     }
 
-    @Test public void testProcessSynchronizePluginMessage() throws Exception {
+    @Test public void testProcessSynchronizeGlobalConfigMessage() throws Exception {
 
         String fileName = "fileName";
         byte[] fileAsByteArray = null;
-        hajpMessage = new SynchronizePluginMessage(fileName, fileAsByteArray);
+        hajpMessage = new SynchronizeGlobalConfigMessage(fileName, fileAsByteArray);
 
-        Mockito.doNothing().when(mockPluginsManager).updatePluginsConfig(Mockito.anyMap());
+        Mockito.doNothing().when(mockGlobalConfigsManager).updateGlobalConfig(Mockito.anyMap());
 
         boolean result = unitUnderTest.process(hajpMessage);
 
-        Mockito.verify(mockPluginsManager, Mockito.times(1)).updatePluginsConfig(Mockito.anyMap());
+        Mockito.verify(mockGlobalConfigsManager, Mockito.times(1)).updateGlobalConfig(
+            Mockito.anyMap());
         Assert.assertEquals(true, result);
     }
 
@@ -68,7 +70,7 @@ import java.io.IOException;
     @Test public void testProcessValidAndUnknownMessage() throws Exception {
 
         Mockito.when(mockHajpMessage.isValid()).thenReturn(true);
-        // return any type but ones Plugin related
+        // return any type but ones Global Config related
         Mockito.when(mockHajpMessage.getOperationType()).thenReturn(OperationType.DELETE_JOB);
 
         boolean result = unitUnderTest.process(mockHajpMessage);
@@ -85,14 +87,15 @@ import java.io.IOException;
 
         String fileName = "fileName";
         byte[] fileAsByteArray = null;
-        hajpMessage = new SynchronizePluginMessage(fileName, fileAsByteArray);
+        hajpMessage = new SynchronizeGlobalConfigMessage(fileName, fileAsByteArray);
 
         Mockito.doThrow(new IOException("testProcessMessageWithIOException"))
-            .when(mockPluginsManager).updatePluginsConfig(Mockito.anyMap());
+            .when(mockGlobalConfigsManager).updateGlobalConfig(Mockito.anyMap());
 
         boolean result = unitUnderTest.process(hajpMessage);
 
-        Mockito.verify(mockPluginsManager,Mockito.times(1)).updatePluginsConfig(Mockito.anyMap());
+        Mockito.verify(mockGlobalConfigsManager,Mockito.times(1)).updateGlobalConfig(
+            Mockito.anyMap());
         Assert.assertEquals(false, result);
     }
 
