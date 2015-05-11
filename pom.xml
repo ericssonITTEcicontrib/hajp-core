@@ -76,9 +76,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-common.git</connection>
-        <developerConnection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-common.git</developerConnection>
-        <url>git@github.com:ericssonITTEcicontrib/hajp-common.git</url>
+        <connection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-core.git</connection>
+        <developerConnection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-core.git</developerConnection>
+        <url>git@github.com:ericssonITTEcicontrib/hajp-core.git</url>
     </scm>
 
     <properties>
