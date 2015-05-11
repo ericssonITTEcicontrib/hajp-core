@@ -8,18 +8,41 @@ fi
 
 set -e
 
-USERNAME=artread
-PASSWD="\{DESede\}YNtyA/TMlbuQjz/BlYj9Pw=="
-VERSION=`xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t -m "/x:project/x:version/text()"  -c . -n ../pom.xml  | head -1`
-if [ -z `echo $VERSION | grep SNAPSHOT` ] ; then
-  echo "$VERSION is a release version"
-  HPIURL=https://arm.mo.ca.am.ericsson.se/artifactory/simple/proj-jnkserv-staging-local/com/ericsson/jenkinsci/hajp/hajp-core/$VERSION/hajp-core-$VERSION.hpi
+VERSIONSTR=`xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t -m "/x:project/x:version/text()"  -c . -n ../pom.xml  | head -1`
+
+echo "$VERSION is a release version"
+
+SNAPSHOTBEGIN=`echo $VERSIONSTR | grep -b -o '-' | awk 'BEGIN {FS=":"}{print $1}' | bc`
+STRSIZE=${#VERSIONSTR}
+
+FINALCHARPOS=$((STRSIZE))
+
+if [[ (( "$SNAPSHOTBEGIN" -gt 0 )) ]]; then
+  ## If version has -SNAPSHOT in it, then the
+  ## release version should have its micro 1 less
+  ## than the snapshot
+  ## Example: version in version.sbt = 1.0.2-SNAPSHOT
+  ##          release version is 1.0.1
+  VERSION=${VERSIONSTR:0:$SNAPSHOTBEGIN}
+  major=$(echo $VERSION | cut -d. -f1)
+  minor=$(echo $VERSION | cut -d. -f2)
+  micro=$(echo $VERSION | cut -d. -f3)
+  releasemicro=$(echo "$micro - 1" | bc)
+  RELEASEVERSION="$major.$minor.$releasemicro"
+  SNAPSHOTVERSION="$major.$minor.$micro"
 else
-  echo "$VERSION is a snapshot version"
-  VERSION=`echo $VERSION | cut -f1 -d-`
-  HPIURL=https://arm.mo.ca.am.ericsson.se/artifactory/simple/proj-jnkserv-dev-local/com/ericsson/jenkinsci/hajp/hajp-core/$VERSION-SNAPSHOT/hajp-core-$VERSION-SNAPSHOT.hpi
+  ## If not -SNAPSHOT in version
+  ## Then the release version is the version.
+  VERSION=${VERSIONSTR:0:$FINALCHARPOS}
+  RELEASEVERSION=$VERSION
 fi
-JENKINSVERSION=1.580.2
+
+
+
+HPIURL=https://oss.sonatype.org/content/repositories/releases/com/ericsson/jenkinsci/hajp/hajp-core/$VERSION/hajp-core-$VERSION.hpi
+
+
+JENKINSVERSION=1.596.2
 
 rm -rf WEB-INF
 mkdir -p WEB-INF/plugins
@@ -28,7 +51,7 @@ mkdir -p WEB-INF/lib
 curl -f -L http://mirrors.jenkins-ci.org/war-stable/$JENKINSVERSION/jenkins.war -o jenkins.war
 curl -f -L https://updates.jenkins-ci.org/latest/jquery.hpi -o WEB-INF/plugins/jquery.hpi
 
-wget --no-proxy -O hajp-core.hpi --user=$USERNAME --password=$PASSWD $HPIURL
+ wget --no-proxy -O hajp-core.hpi $HPIURL
 
 cp hajp*.hpi WEB-INF/plugins/hajp.hpi
 cp jars/* WEB-INF/lib/
