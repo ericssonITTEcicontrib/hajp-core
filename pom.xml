@@ -14,6 +14,72 @@
     <name>Jenkins HA plugin</name>
     <version>2.0.3-SNAPSHOT</version>
     <packaging>hpi</packaging>
+    <description>Jenkins High Availabilty Plugin</description>
+    <url>https://github.com/ericssonITTEcicontrib/hajp-core</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>gpg</executable>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <developers>
+        <developer>
+            <name>Daniel Yinanc</name>
+            <organization>Ericsson</organization>
+            <organizationUrl>http://www.ericsson.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Scott Hebert</name>
+            <organization>Ericsson</organization>
+            <organizationUrl>http://www.ericsson.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Hongkai Liu</name>
+            <organization>Ericsson</organization>
+            <organizationUrl>http://www.ericsson.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-core.git</connection>
+        <developerConnection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-core.git</developerConnection>
+        <url>git@github.com:ericssonITTEcicontrib/hajp-core.git</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -228,6 +294,28 @@
 	    </execution>
 	  </executions>
 	  </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
